@@ -18,7 +18,6 @@ namespace ClubBackendAPI.Controllers
         }
 
         // GET: api/Asistencias/plantel/{categoriaId}
-        // Devuelve todos los jugadores asignados a una categoría específica
         [HttpGet("plantel/{categoriaId}")]
         public IActionResult GetPlantel(int categoriaId)
         {
@@ -28,10 +27,10 @@ namespace ClubBackendAPI.Controllers
             {
                 con.Open();
                 string query = @"
-                    SELECT u.id, u.nombre, u.apellido 
+                    SELECT u.id_usuario, u.nombre, u.apellido 
                     FROM usuarios u
-                    INNER JOIN detalle_jugadores d ON u.id = d.usuario_id
-                    WHERE d.categoria_id = @CategoriaId";
+                    INNER JOIN fichas_deportivas f ON u.id_usuario = f.fk_usuario_id
+                    WHERE f.fk_categoria_id = @CategoriaId AND f.estado = 'Activo'";
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
@@ -43,7 +42,7 @@ namespace ClubBackendAPI.Controllers
                         {
                             plantel.Add(new
                             {
-                                Id = reader.GetInt32(0),
+                                IdUsuario = reader.GetInt32(0),
                                 Nombre = reader.GetString(1),
                                 Apellido = reader.GetString(2)
                             });
@@ -55,21 +54,55 @@ namespace ClubBackendAPI.Controllers
             return Ok(plantel);
         }
 
+        // GET: api/Asistencias/jugador/{idUsuario} (Historial para el Rol Jugador)
+        [HttpGet("jugador/{idUsuario}")]
+        public IActionResult GetAsistenciasPorJugador(int idUsuario)
+        {
+            var historial = new List<object>();
+
+            using (SqlConnection con = new SqlConnection(_connectionString))
+            {
+                con.Open();
+                string query = @"
+                    SELECT CONVERT(VARCHAR(10), a.fecha, 103) AS fecha_formateada, c.nombre AS categoria, a.estado
+                    FROM asistencias a
+                    INNER JOIN categorias c ON a.fk_categoria_id = c.id_categoria
+                    WHERE a.fk_usuario_id = @UsuarioId
+                    ORDER BY a.fecha DESC, a.id_asistencia DESC";
+
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@UsuarioId", idUsuario);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            historial.Add(new
+                            {
+                                Fecha = reader.GetString(0),
+                                Categoria = reader.GetString(1),
+                                Estado = reader.GetString(2)
+                            });
+                        }
+                    }
+                }
+            }
+            return Ok(historial);
+        }
+
         // POST: api/Asistencias/registrar
-        // Guarda la asistencia masiva de todo el plantel en un día
         [HttpPost("registrar")]
         public IActionResult RegistrarAsistencia([FromBody] RegistroAsistenciaRequest request)
         {
             using (SqlConnection con = new SqlConnection(_connectionString))
             {
                 con.Open();
-                // Usamos una transacción para guardar todo de golpe
                 using (SqlTransaction transaction = con.BeginTransaction())
                 {
                     try
                     {
                         string query = @"
-                            INSERT INTO asistencias (usuario_id, categoria_id, fecha, estado, registrado_por) 
+                            INSERT INTO asistencias (fk_usuario_id, fk_categoria_id, fecha, estado, registrado_por) 
                             VALUES (@UsuarioId, @CategoriaId, @Fecha, @Estado, @RegistradoPor)";
 
                         foreach (var jugador in request.Jugadores)
@@ -79,7 +112,7 @@ namespace ClubBackendAPI.Controllers
                                 cmd.Parameters.AddWithValue("@UsuarioId", jugador.UsuarioId);
                                 cmd.Parameters.AddWithValue("@CategoriaId", request.CategoriaId);
                                 cmd.Parameters.AddWithValue("@Fecha", request.Fecha.ToString("yyyy-MM-dd"));
-                                cmd.Parameters.AddWithValue("@Estado", jugador.Estado); // 'Presente', 'Ausente' o 'Justificado'
+                                cmd.Parameters.AddWithValue("@Estado", jugador.Estado);
                                 cmd.Parameters.AddWithValue("@RegistradoPor", request.ProfesorId);
 
                                 cmd.ExecuteNonQuery();
@@ -87,7 +120,7 @@ namespace ClubBackendAPI.Controllers
                         }
 
                         transaction.Commit();
-                        return Ok(new { mensaje = "Asistencia registrada correctamente." });
+                        return Ok(new { mensaje = "Asistencia masiva guardada correctamente." });
                     }
                     catch (Exception ex)
                     {
@@ -99,7 +132,6 @@ namespace ClubBackendAPI.Controllers
         }
     }
 
-    // Modelos para recibir el JSON
     public class RegistroAsistenciaRequest
     {
         public int CategoriaId { get; set; }

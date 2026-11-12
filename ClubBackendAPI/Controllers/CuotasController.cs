@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 
 namespace ClubBackendAPI.Controllers
@@ -16,82 +17,124 @@ namespace ClubBackendAPI.Controllers
             _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
-        // GET: api/Cuotas/pendientes/{usuarioId}
-        // Devuelve las cuotas impagas de un socio o jugador
-        [HttpGet("pendientes/{usuarioId}")]
-        public IActionResult GetCuotasPendientes(int usuarioId)
+        // GET: api/Cuotas/morosos (Para el Administrador)
+        [HttpGet("morosos")]
+        public IActionResult GetMorosos()
         {
-            List<object> cuotas = new List<object>();
+            var morosos = new List<object>();
 
             using (SqlConnection con = new SqlConnection(_connectionString))
             {
                 con.Open();
-                string query = "SELECT id, monto, mes, anio, estado, fecha_vencimiento FROM cuotas WHERE usuario_id = @UsuarioId AND estado IN ('Pendiente', 'Vencida') ORDER BY anio, mes";
+                string query = @"
+                    SELECT c.id_cuota, u.id_usuario, (u.nombre + ' ' + u.apellido) AS jugador, u.dni, c.periodo, c.monto, c.estado
+                    FROM cuotas c
+                    INNER JOIN usuarios u ON c.fk_usuario_id = u.id_usuario
+                    WHERE c.estado = 'Pendiente'
+                    ORDER BY c.id_cuota DESC";
+
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        morosos.Add(new
+                        {
+                            IdCuota = reader.GetInt32(0),
+                            IdUsuario = reader.GetInt32(1),
+                            Jugador = reader.GetString(2),
+                            Dni = reader.IsDBNull(3) ? "-" : reader.GetString(3),
+                            Periodo = reader.GetString(4),
+                            Monto = reader.GetDecimal(5),
+                            Estado = reader.GetString(6)
+                        });
+                    }
+                }
+            }
+            return Ok(morosos);
+        }
+
+        // GET: api/Cuotas/jugador/{idUsuario} (Para el Rol Jugador)
+        [HttpGet("jugador/{idUsuario}")]
+        public IActionResult GetCuotasPorJugador(int idUsuario)
+        {
+            var misCuotas = new List<object>();
+
+            using (SqlConnection con = new SqlConnection(_connectionString))
+            {
+                con.Open();
+                string query = @"
+                    SELECT id_cuota, periodo, monto, estado
+                    FROM cuotas
+                    WHERE fk_usuario_id = @UsuarioId
+                    ORDER BY id_cuota DESC";
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
-                    cmd.Parameters.AddWithValue("@UsuarioId", usuarioId);
-
+                    cmd.Parameters.AddWithValue("@UsuarioId", idUsuario);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            cuotas.Add(new
+                            misCuotas.Add(new
                             {
-                                Id = reader.GetInt32(0),
-                                Monto = reader.GetDecimal(1),
-                                Mes = reader.GetInt32(2),
-                                Anio = reader.GetInt32(3),
-                                Estado = reader.GetString(4),
-                                FechaVencimiento = reader.GetDateTime(5).ToString("yyyy-MM-dd")
+                                IdCuota = reader.GetInt32(0),
+                                Periodo = reader.GetString(1),
+                                Monto = reader.GetDecimal(2),
+                                Estado = reader.GetString(3)
                             });
                         }
                     }
                 }
             }
-
-            if (cuotas.Count == 0)
-            {
-                return Ok(new { mensaje = "El usuario está al día", deudas = cuotas });
-            }
-
-            return Ok(new { mensaje = $"El usuario debe {cuotas.Count} cuota(s)", deudas = cuotas });
+            return Ok(misCuotas);
         }
 
-        // POST: api/Cuotas/pagar
-        // Cambia el estado de la cuota a "Pagada" y registra la fecha y el administrador que cobró
-        [HttpPost("pagar")]
-        public IActionResult PagarCuota([FromBody] PagoRequest request)
+        // POST: api/Cuotas/asignar
+        [HttpPost("asignar")]
+        public IActionResult AsignarCuota([FromBody] NuevaCuotaRequest request)
         {
             using (SqlConnection con = new SqlConnection(_connectionString))
             {
                 con.Open();
-                // GETDATE() toma la fecha y hora actual del servidor SQL
-                string query = "UPDATE cuotas SET estado = 'Pagada', fecha_pago = GETDATE(), registrado_por = @AdminId WHERE id = @CuotaId AND estado != 'Pagada'";
+                string query = @"
+                    INSERT INTO cuotas (fk_usuario_id, periodo, monto, estado)
+                    VALUES (@UsuarioId, @Periodo, @Monto, 'Pendiente')";
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
-                    cmd.Parameters.AddWithValue("@CuotaId", request.CuotaId);
-                    cmd.Parameters.AddWithValue("@AdminId", request.AdminId);
-
-                    int filasAfectadas = cmd.ExecuteNonQuery();
-
-                    if (filasAfectadas > 0)
-                    {
-                        return Ok(new { mensaje = "Cuota pagada con éxito" });
-                    }
-                    else
-                    {
-                        return BadRequest(new { mensaje = "No se pudo procesar el pago. Quizás la cuota ya estaba pagada o no existe." });
-                    }
+                    cmd.Parameters.AddWithValue("@UsuarioId", request.UsuarioId);
+                    cmd.Parameters.AddWithValue("@Periodo", request.Periodo);
+                    cmd.Parameters.AddWithValue("@Monto", request.Monto);
+                    cmd.ExecuteNonQuery();
                 }
             }
+            return Ok(new { mensaje = "Cuota asignada correctamente." });
+        }
+
+        // PUT: api/Cuotas/pagar/{idCuota}
+        [HttpPut("pagar/{idCuota}")]
+        public IActionResult PagarCuota(int idCuota)
+        {
+            using (SqlConnection con = new SqlConnection(_connectionString))
+            {
+                con.Open();
+                string query = "UPDATE cuotas SET estado = 'Pagada' WHERE id_cuota = @IdCuota";
+
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@IdCuota", idCuota);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            return Ok(new { mensaje = "Pago registrado con éxito." });
         }
     }
 
-    public class PagoRequest
+    public class NuevaCuotaRequest
     {
-        public int CuotaId { get; set; }
-        public int AdminId { get; set; }
+        public int UsuarioId { get; set; }
+        public string Periodo { get; set; }
+        public decimal Monto { get; set; }
     }
 }

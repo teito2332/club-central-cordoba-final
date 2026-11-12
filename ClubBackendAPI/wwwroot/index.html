@@ -1,0 +1,1137 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club Atlético Defensores Central Córdoba | Sitio Oficial</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --negro: #0b0b0b;
+            --negro-suave: #161616;
+            --dorado: #c5a059;
+            --dorado-brillo: #e2c17d;
+            --gris-fondo: #f2f4f7;
+            --texto: #222222;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', 'Segoe UI', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--gris-fondo);
+            color: var(--texto);
+            overflow-x: hidden;
+        }
+
+        /* BARRA DE NAVEGACIÓN */
+        header {
+            background: rgba(11, 11, 11, 0.9);
+            backdrop-filter: blur(16px);
+            padding: 12px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(197, 160, 89, 0.35);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+        }
+
+        .brand-logo {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 8px rgba(197, 160, 89, 0.4));
+            transition: transform 0.3s;
+        }
+
+        .brand:hover .brand-logo {
+            transform: scale(1.08);
+        }
+
+        .brand-text h1 {
+            color: #ffffff;
+            font-size: 1.25rem;
+            letter-spacing: 2px;
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .brand-text span {
+            color: var(--dorado);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 26px;
+            list-style: none;
+        }
+
+            .nav-links a {
+                color: #d0d0d0;
+                text-decoration: none;
+                font-size: 0.82rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                transition: 0.3s;
+            }
+
+                .nav-links a:hover {
+                    color: var(--dorado);
+                }
+
+        .btn-login {
+            background: linear-gradient(90deg, var(--dorado) 0%, var(--dorado-brillo) 100%);
+            color: var(--negro);
+            padding: 11px 24px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(197, 160, 89, 0.3);
+        }
+
+            .btn-login:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 22px rgba(197, 160, 89, 0.55);
+            }
+
+        /* PORTADA HERO CON ESTADIO.JPG */
+        .hero {
+            background: radial-gradient(circle at center, rgba(197, 160, 89, 0.16) 0%, rgba(11, 11, 11, 0.9) 75%), linear-gradient(180deg, rgba(11,11,11,0.65) 0%, rgba(11,11,11,0.95) 100%), url('estadio.jpg'), url('https://images.unsplash.com/photo-1518605368461-1ee7c532066c?q=80&w=2070');
+            background-position: center;
+            background-size: cover;
+            background-attachment: fixed;
+            min-height: 88vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 120px 20px 90px;
+            position: relative;
+        }
+
+        .hero-crest {
+            width: 115px;
+            height: 115px;
+            object-fit: contain;
+            margin-bottom: 18px;
+            filter: drop-shadow(0 8px 25px rgba(0,0,0,0.7));
+        }
+
+        .hero-badge {
+            background: rgba(197, 160, 89, 0.15);
+            border: 1px solid var(--dorado);
+            color: var(--dorado-brillo);
+            padding: 7px 20px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.75rem;
+            margin-bottom: 20px;
+            border-radius: 50px;
+        }
+
+        .hero h2 {
+            font-size: clamp(2.5rem, 5.5vw, 4.6rem);
+            text-transform: uppercase;
+            line-height: 1.05;
+            margin-bottom: 18px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        }
+
+            .hero h2 span {
+                background: linear-gradient(90deg, var(--dorado) 0%, #fff2d6 50%, var(--dorado) 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+        .hero p {
+            font-size: 1.08rem;
+            color: #cccccc;
+            letter-spacing: 1px;
+            max-width: 640px;
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn-outline-gold {
+            border: 2px solid var(--dorado);
+            color: #ffffff;
+            padding: 12px 28px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+            .btn-outline-gold:hover {
+                background: var(--dorado);
+                color: var(--negro);
+            }
+
+        /* TARJETA CENTRO DE PARTIDO */
+        .match-wrapper {
+            max-width: 1100px;
+            margin: -55px auto 0;
+            padding: 0 20px;
+            position: relative;
+            z-index: 20;
+        }
+
+        .match-banner {
+            background: linear-gradient(135deg, #121212 0%, #1d1d1d 100%);
+            border: 1px solid rgba(197, 160, 89, 0.4);
+            border-top: 4px solid var(--dorado);
+            border-radius: 16px;
+            padding: 32px 40px;
+            color: white;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.35);
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .match-meta {
+            text-align: left;
+            border-right: 1px solid #2e2e2e;
+            padding-right: 20px;
+        }
+
+            .match-meta .torneo-tag {
+                color: var(--dorado);
+                font-weight: 800;
+                font-size: 0.75rem;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                display: block;
+                margin-bottom: 6px;
+            }
+
+            .match-meta h4 {
+                font-size: 1.2rem;
+                font-weight: 900;
+                margin-bottom: 8px;
+            }
+
+            .match-meta p {
+                color: #aaa;
+                font-size: 0.85rem;
+                line-height: 1.5;
+            }
+
+        .match-teams {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .team-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .team-crest-img {
+            width: 68px;
+            height: 68px;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+        }
+
+        .team-crest {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: #0b0b0b;
+            border: 2px solid #555;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            color: #ccc;
+            font-size: 0.95rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+        }
+
+        .team-name {
+            font-size: 1.2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .vs-pill {
+            background: rgba(197, 160, 89, 0.15);
+            border: 1px solid var(--dorado);
+            color: var(--dorado);
+            font-weight: 900;
+            font-size: 0.9rem;
+            padding: 10px 14px;
+            border-radius: 50%;
+        }
+
+        .match-countdown {
+            text-align: right;
+            border-left: 1px solid #2e2e2e;
+            padding-left: 20px;
+        }
+
+        .countdown-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #999;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .countdown-boxes {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        .cd-item {
+            background: #0b0b0b;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 8px 10px;
+            min-width: 52px;
+            text-align: center;
+        }
+
+            .cd-item strong {
+                display: block;
+                font-size: 1.15rem;
+                color: var(--dorado);
+                font-weight: 900;
+            }
+
+            .cd-item small {
+                font-size: 0.65rem;
+                color: #888;
+                text-transform: uppercase;
+            }
+
+        /* FRANJA DE ESTADÍSTICAS */
+        .stats-strip {
+            max-width: 1100px;
+            margin: 35px auto 0;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 20px 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            border-bottom: 3px solid var(--dorado);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .stat-icon {
+            font-size: 1.8rem;
+            background: #f8f5ee;
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+        }
+
+        .stat-text strong {
+            display: block;
+            font-size: 1.35rem;
+            font-weight: 900;
+            color: var(--negro);
+        }
+
+        .stat-text span {
+            font-size: 0.78rem;
+            color: #777;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        /* CONTENEDOR PRINCIPAL */
+        .container {
+            max-width: 1200px;
+            margin: 65px auto;
+            padding: 0 20px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e2e6ea;
+            padding-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: 1.85rem;
+            color: var(--negro);
+            text-transform: uppercase;
+            font-weight: 900;
+            position: relative;
+        }
+
+            .section-title::after {
+                content: '';
+                position: absolute;
+                bottom: -14px;
+                left: 0;
+                width: 80px;
+                height: 4px;
+                background: var(--dorado);
+            }
+
+        .section-subtitle {
+            color: #777;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* GRILLA PRINCIPAL: NOTICIAS + TABLA */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1.85fr 1.15fr;
+            gap: 40px;
+            margin-bottom: 70px;
+        }
+
+        @media(max-width: 950px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .match-banner {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .match-meta, .match-countdown {
+                border: none;
+                padding: 0;
+                text-align: center;
+            }
+
+            .countdown-boxes {
+                justify-content: center;
+            }
+
+            .stats-strip {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+
+        /* NOTICIAS */
+        .news-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .news-card {
+            background: white;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+            border: 1px solid #ececec;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+            .news-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 14px 32px rgba(0,0,0,0.1);
+                border-color: var(--dorado);
+            }
+
+        .news-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .news-body {
+            padding: 26px;
+            border-left: 5px solid var(--dorado);
+        }
+
+        .news-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .news-tag {
+            background: var(--negro);
+            color: var(--dorado);
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .news-date {
+            color: #888;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .news-card h3 {
+            color: var(--negro);
+            font-size: 1.35rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .news-card p {
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.65;
+        }
+
+        /* TABLA DE POSICIONES */
+        .standings-box {
+            background: white;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            border: 1px solid #ececec;
+            height: fit-content;
+        }
+
+        .standings-header {
+            background: var(--negro);
+            color: white;
+            padding: 20px 24px;
+            border-bottom: 3px solid var(--dorado);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+            .standings-header h3 {
+                font-size: 1.05rem;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                font-weight: 800;
+                color: var(--dorado);
+            }
+
+            .standings-header span {
+                font-size: 0.75rem;
+                background: rgba(255,255,255,0.1);
+                padding: 4px 10px;
+                border-radius: 50px;
+            }
+
+        .standings-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+            .standings-table th {
+                background: #f8f9fa;
+                color: #777;
+                font-size: 0.75rem;
+                text-transform: uppercase;
+                padding: 12px 14px;
+                text-align: center;
+                border-bottom: 1px solid #eee;
+            }
+
+                .standings-table th:nth-child(2),
+                .standings-table td:nth-child(2) {
+                    text-align: left;
+                }
+
+            .standings-table td {
+                padding: 14px;
+                text-align: center;
+                border-bottom: 1px solid #f1f1f1;
+                font-weight: 600;
+            }
+
+            .standings-table tr.leader-row {
+                background: rgba(197, 160, 89, 0.12);
+            }
+
+                .standings-table tr.leader-row td {
+                    font-weight: 900;
+                    color: var(--negro);
+                }
+
+        .pos-badge {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+            border-radius: 50%;
+            font-size: 0.78rem;
+            background: #eee;
+            color: #555;
+        }
+
+        .leader-row .pos-badge {
+            background: var(--dorado);
+            color: var(--negro);
+        }
+
+        /* GALERÍA DE FOTOS DEL CLUB */
+        .gallery-section {
+            margin-top: 70px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            height: 230px;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            border: 2px solid transparent;
+            transition: all 0.35s ease;
+        }
+
+            .gallery-item:hover {
+                transform: translateY(-5px);
+                border-color: var(--dorado);
+                box-shadow: 0 14px 28px rgba(0,0,0,0.18);
+            }
+
+            .gallery-item img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: transform 0.5s ease;
+            }
+
+            .gallery-item:hover img {
+                transform: scale(1.08);
+            }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(11,11,11,0.9));
+            color: white;
+            padding: 25px 16px 14px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* PLANTEL DESTACADO */
+        .squad-section {
+            margin-top: 70px;
+        }
+
+        .squad-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+        }
+
+        .player-card {
+            background: linear-gradient(180deg, #151515 0%, #0c0c0c 100%);
+            color: white;
+            border-radius: 16px;
+            text-align: center;
+            padding: 32px 22px 26px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+            border: 1px solid rgba(197, 160, 89, 0.3);
+            border-bottom: 4px solid var(--dorado);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.35s ease;
+        }
+
+            .player-card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 18px 35px rgba(0,0,0,0.22);
+                border-color: var(--dorado);
+            }
+
+            .player-card::before {
+                content: 'CADCC';
+                position: absolute;
+                top: 10px;
+                right: -15px;
+                font-size: 3.2rem;
+                font-weight: 900;
+                color: rgba(255, 255, 255, 0.03);
+                pointer-events: none;
+            }
+
+        .player-avatar {
+            width: 82px;
+            height: 82px;
+            background: radial-gradient(circle, #2a2a2a 0%, #111 100%);
+            color: var(--dorado);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.7rem;
+            font-weight: 900;
+            margin: 0 auto 18px;
+            border: 3px solid var(--dorado);
+            box-shadow: 0 0 20px rgba(197, 160, 89, 0.25);
+        }
+
+        .player-card h4 {
+            font-size: 1.2rem;
+            color: #ffffff;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .player-role-pill {
+            font-size: 0.75rem;
+            color: var(--negro);
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, var(--dorado) 0%, var(--dorado-brillo) 100%);
+            padding: 5px 14px;
+            border-radius: 50px;
+            display: inline-block;
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--negro);
+            color: #888;
+            padding: 55px 20px 35px;
+            border-top: 3px solid var(--dorado);
+            margin-top: 90px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 12px;
+        }
+
+        .footer-crest {
+            width: 65px;
+            height: 65px;
+            object-fit: contain;
+            margin-bottom: 5px;
+        }
+
+        .footer-logo {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: white;
+            letter-spacing: 3px;
+        }
+
+            .footer-logo span {
+                color: var(--dorado);
+            }
+
+        footer p {
+            font-size: 0.88rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#" class="brand">
+            <img src="image.png" alt="Escudo CADCC" class="brand-logo" onerror="this.style.display='none'">
+            <div class="brand-text">
+                <h1>C.A.D.C.C</h1>
+                <span>Córdoba • Est. 2014</span>
+            </div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#partido">Próximo Partido</a></li>
+            <li><a href="#novedades">Noticias</a></li>
+            <li><a href="#galeria">Galería</a></li>
+            <li><a href="#plantel">Plantel</a></li>
+        </ul>
+        <a href="login.html" class="btn-login">🔐 Acceso Socios / Staff</a>
+    </header>
+
+    <section class="hero" id="inicio">
+        <img src="image.png" alt="Escudo Oficial CADCC" class="hero-crest" onerror="this.style.display='none'">
+        <div class="hero-badge">⭐ Temporada Oficial 2026 ⭐</div>
+        <h2>Defensores Central <span>Córdoba</span></h2>
+        <p>Más que un club, una familia. Consultá el fixture, las novedades institucionales y el presente de nuestro plantel de Primera División.</p>
+        <div class="hero-buttons">
+            <a href="#novedades" class="btn-login" style="padding: 14px 30px; font-size: 0.85rem;">Ver Últimas Noticias</a>
+            <a href="login.html" class="btn-outline-gold">Autogestión de Cuotas</a>
+        </div>
+    </section>
+
+    <!-- CENTRO DE PARTIDO -->
+    <div class="match-wrapper" id="partido">
+        <div class="match-banner">
+            <div class="match-meta">
+                <span class="torneo-tag">🏆 Torneo Liga Local</span>
+                <h4>Fecha 5 • Clausura</h4>
+                <p>📅 Sábado 16:00 hs<br>📍 Predio Oficial C.A.D.C.C.</p>
+            </div>
+
+            <div class="match-teams">
+                <div class="team-box">
+                    <img src="image.png" alt="CADCC" class="team-crest-img" onerror="this.outerHTML='<div class=\'team-crest\'>CC</div>'">
+                    <span class="team-name">Central Cba</span>
+                </div>
+                <span class="vs-pill">VS</span>
+                <div class="team-box">
+                    <div class="team-crest">B.P.</div>
+                    <span class="team-name">Barrio Parque</span>
+                </div>
+            </div>
+
+            <div class="match-countdown">
+                <span class="countdown-label">⏳ Falta para el pitazo inicial</span>
+                <div class="countdown-boxes">
+                    <div class="cd-item"><strong id="cd-dias">03</strong><small>Días</small></div>
+                    <div class="cd-item"><strong id="cd-horas">18</strong><small>Hs</small></div>
+                    <div class="cd-item"><strong id="cd-min">45</strong><small>Min</small></div>
+                    <div class="cd-item"><strong id="cd-seg">12</strong><small>Seg</small></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FRANJA DE IDENTIDAD -->
+    <div class="stats-strip">
+        <div class="stat-item">
+            <div class="stat-icon">🛡️</div>
+            <div class="stat-text"><strong>2014</strong><span>Año de Fundación</span></div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-icon">🥇</div>
+            <div class="stat-text"><strong>1° Puesto</strong><span>Actual en el Torneo</span></div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-icon">⚽</div>
+            <div class="stat-text"><strong>3 Categorías</strong><span>Primera, Reserva e Inf.</span></div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-icon">🖤</div>
+            <div class="stat-text"><strong>100%</strong><span>Identidad y Pertenencia</span></div>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="content-grid">
+
+            <!-- COLUMNA DE NOTICIAS -->
+            <div id="novedades">
+                <div class="section-header">
+                    <h2 class="section-title">Actualidad del Club</h2>
+                    <span class="section-subtitle">Prensa Oficial C.A.D.C.C.</span>
+                </div>
+                <div id="contenedorNoticias" class="news-grid">
+                    <div class="news-card">
+                        <div class="news-body">
+                            <div class="news-meta">
+                                <span class="news-tag">Institucional</span>
+                                <span class="news-date">Hoy</span>
+                            </div>
+                            <h3>¡Bienvenidos al nuevo portal oficial de Defensores Central Córdoba!</h3>
+                            <p>Desde este espacio podrás seguir de cerca todas las novedades de nuestras divisiones, el cronograma de partidos y gestionar tu estado de socio en línea.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COLUMNA DE TABLA DE POSICIONES -->
+            <div id="posiciones">
+                <div class="section-header">
+                    <h2 class="section-title">Posiciones</h2>
+                    <span class="section-subtitle">Zona A</span>
+                </div>
+                <div class="standings-box">
+                    <div class="standings-header">
+                        <h3>Torneo Oficial</h3>
+                        <span>Fecha 4</span>
+                    </div>
+                    <table class="standings-table">
+                        <thead>
+                            <tr><th>#</th><th>Club</th><th>PJ</th><th>DG</th><th>Pts</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr class="leader-row">
+                                <td><span class="pos-badge">1</span></td>
+                                <td>C.A.D.C.C.</td>
+                                <td>9</td>
+                                <td>+12</td>
+                                <td>24</td>
+                            </tr>
+                            <tr>
+                                <td><span class="pos-badge">2</span></td>
+                                <td>Barrio Parque</td>
+                                <td>9</td>
+                                <td>+8</td>
+                                <td>21</td>
+                            </tr>
+                            <tr>
+                                <td><span class="pos-badge">3</span></td>
+                                <td>General Paz Jrs</td>
+                                <td>9</td>
+                                <td>+5</td>
+                                <td>19</td>
+                            </tr>
+                            <tr>
+                                <td><span class="pos-badge">4</span></td>
+                                <td>Argentino Peñarol</td>
+                                <td>9</td>
+                                <td>+2</td>
+                                <td>17</td>
+                            </tr>
+                            <tr>
+                                <td><span class="pos-badge">5</span></td>
+                                <td>Los Andes</td>
+                                <td>9</td>
+                                <td>-1</td>
+                                <td>15</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- SECCIÓN GALERÍA FOTOGRÁFICA -->
+        <div class="gallery-section" id="galeria">
+            <div class="section-header">
+                <h2 class="section-title">Postales de la Fecha</h2>
+                <span class="section-subtitle">Cobertura Fotográfica Oficial</span>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="foto1.jpg" alt="Partido CADCC" onerror="this.src='https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=800'">
+                    <div class="gallery-caption">⚽ Primera División • Torneo Clausura</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="foto2.jpg" alt="Entrenamiento CADCC" onerror="this.src='https://images.unsplash.com/photo-1526232761682-d26e03ac148e?q=80&w=800'">
+                    <div class="gallery-caption">🧤 Preparación física y de arqueros</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="foto3.jpg" alt="Hinchada CADCC" onerror="this.src='https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=800'">
+                    <div class="gallery-caption">🖤💛 La familia de Defensores siempre presente</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="foto4.jpg" alt="Plantel CADCC" onerror="this.src='https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?q=80&w=800'">
+                    <div class="gallery-caption">🏆 Unidos por los colores del club</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN PLANTEL DESTACADO -->
+        <div class="squad-section" id="plantel">
+            <div class="section-header">
+                <h2 class="section-title">Figuras del Plantel</h2>
+                <span class="section-subtitle">Primera División y Cuerpo Técnico</span>
+            </div>
+            <div id="contenedorPlantelPublico" class="squad-grid">
+                <div class="player-card">
+                    <div class="player-avatar">MB</div>
+                    <h4>Mateo Bustos</h4>
+                    <span class="player-role-pill">Arquero</span>
+                </div>
+                <div class="player-card">
+                    <div class="player-avatar">FG</div>
+                    <h4>Facundo Gómez</h4>
+                    <span class="player-role-pill">Defensor Central</span>
+                </div>
+                <div class="player-card">
+                    <div class="player-avatar">TÁ</div>
+                    <h4>Tomás Álvarez</h4>
+                    <span class="player-role-pill">Delantero</span>
+                </div>
+                <div class="player-card">
+                    <div class="player-avatar">GB</div>
+                    <h4>Gerardo Bettucci</h4>
+                    <span class="player-role-pill">Director Técnico</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <img src="image.png" alt="Logo CADCC" class="footer-crest" onerror="this.style.display='none'">
+            <div class="footer-logo">C.A.<span>D.C.C.</span></div>
+            <p>&copy; 2026 <span>Club Atlético Defensores Central Córdoba</span> • Todos los derechos reservados.</p>
+            <p style="font-size: 0.78rem; color: #555;">Sistema Integral de Gestión Deportiva • Córdoba, Argentina</p>
+        </div>
+    </footer>
+
+    <script>
+        const API_URL = 'https://localhost:7295/api';
+
+        function iniciarCuentaRegresiva() {
+            function actualizarReloj() {
+                const ahora = new Date();
+                let proximoSabado = new Date();
+                const diasHastaSabado = (6 - ahora.getDay() + 7) % 7;
+                proximoSabado.setDate(ahora.getDate() + (diasHastaSabado === 0 && ahora.getHours() >= 16 ? 7 : diasHastaSabado));
+                proximoSabado.setHours(16, 0, 0, 0);
+
+                const diff = proximoSabado - ahora;
+                if (diff > 0) {
+                    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                    const m = Math.floor((diff / 1000 / 60) % 60);
+                    const s = Math.floor((diff / 1000) % 60);
+
+                    document.getElementById('cd-dias').innerText = String(d).padStart(2, '0');
+                    document.getElementById('cd-horas').innerText = String(h).padStart(2, '0');
+                    document.getElementById('cd-min').innerText = String(m).padStart(2, '0');
+                    document.getElementById('cd-seg').innerText = String(s).padStart(2, '0');
+                }
+            }
+            actualizarReloj();
+            setInterval(actualizarReloj, 1000);
+        }
+
+        async function cargarNoticiasPublicas() {
+            try {
+                const response = await fetch(`${API_URL}/Noticias`);
+                const noticias = await response.json();
+                if (noticias.length > 0) {
+                    let html = '';
+                    noticias.forEach(n => {
+                        const imgTag = n.imagenUrl
+                            ? `<img src="${n.imagenUrl}" alt="${n.titulo}" class="news-img">`
+                            : '';
+                        html += `
+                                <div class="news-card">
+                                    ${imgTag}
+                                    <div class="news-body">
+                                        <div class="news-meta">
+                                            <span class="news-tag">Comunicado Oficial</span>
+                                            <span class="news-date">📅 ${n.fechaPublicacion}</span>
+                                        </div>
+                                        <h3>${n.titulo}</h3>
+                                        <p>${n.cuerpo}</p>
+                                    </div>
+                                </div>
+                            `;
+                    });
+                    document.getElementById('contenedorNoticias').innerHTML = html;
+                }
+            } catch (error) {
+                console.log('Modo sin conexión activo en noticias.');
+            }
+        }
+
+        async function cargarPlantelDestacado() {
+            try {
+                const response = await fetch(`${API_URL}/Jugadores`);
+                const jugadores = await response.json();
+                const destacados = jugadores.filter(j => j.esDestacado === true);
+
+                if (destacados.length > 0) {
+                    let html = '';
+                    destacados.forEach(j => {
+                        const inicialNombre = j.nombre ? j.nombre.charAt(0) : '';
+                        const inicialApellido = j.apellido ? j.apellido.charAt(0) : '';
+                        const iniciales = (inicialNombre + inicialApellido).toUpperCase();
+
+                        html += `
+                                <div class="player-card">
+                                    <div class="player-avatar">${iniciales}</div>
+                                    <h4>${j.nombre} ${j.apellido}</h4>
+                                    <span class="player-role-pill">${j.posicion || j.nombreCategoria}</span>
+                                </div>
+                            `;
+                    });
+                    document.getElementById('contenedorPlantelPublico').innerHTML = html;
+                }
+            } catch (error) {
+                console.log('Modo sin conexión activo en plantel.');
+            }
+        }
+
+        iniciarCuentaRegresiva();
+        cargarNoticiasPublicas();
+        cargarPlantelDestacado();
+    </script>
+
+</body>
+</html>

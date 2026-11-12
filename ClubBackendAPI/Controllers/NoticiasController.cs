@@ -18,7 +18,6 @@ namespace ClubBackendAPI.Controllers
         }
 
         // GET: api/Noticias
-        // La web pública usa esto para mostrar las noticias ordenadas por fecha
         [HttpGet]
         public IActionResult GetNoticias()
         {
@@ -27,28 +26,21 @@ namespace ClubBackendAPI.Controllers
             using (SqlConnection con = new SqlConnection(_connectionString))
             {
                 con.Open();
-                // FORMAT nos devuelve la fecha lista para mostrar en la web
-                string query = @"
-                    SELECT id, titulo, contenido, imagen_url, 
-                           FORMAT(fecha_publicacion, 'dd/MM/yyyy') as fecha 
-                    FROM noticias 
-                    ORDER BY fecha_publicacion DESC";
+                string query = "SELECT id_noticia, titulo, cuerpo, imagenUrl, fechaPublicacion FROM noticias ORDER BY id_noticia DESC";
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
+                using (SqlDataReader reader = cmd.ExecuteReader())
                 {
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    while (reader.Read())
                     {
-                        while (reader.Read())
+                        noticias.Add(new
                         {
-                            noticias.Add(new
-                            {
-                                Id = reader.GetInt32(0),
-                                Titulo = reader.GetString(1),
-                                Contenido = reader.GetString(2),
-                                ImagenUrl = reader.IsDBNull(3) ? null : reader.GetString(3),
-                                Fecha = reader.GetString(4)
-                            });
-                        }
+                            IdNoticia = reader.GetInt32(0),
+                            Titulo = reader.GetString(1),
+                            Cuerpo = reader.GetString(2),
+                            ImagenUrl = reader.IsDBNull(3) ? null : reader.GetString(3),
+                            FechaPublicacion = reader.IsDBNull(4) ? "" : reader.GetString(4)
+                        });
                     }
                 }
             }
@@ -56,7 +48,6 @@ namespace ClubBackendAPI.Controllers
         }
 
         // POST: api/Noticias
-        // El administrador usa esto desde el panel privado para publicar
         [HttpPost]
         public IActionResult CrearNoticia([FromBody] NuevaNoticiaRequest request)
         {
@@ -64,38 +55,43 @@ namespace ClubBackendAPI.Controllers
             {
                 con.Open();
                 string query = @"
-                    INSERT INTO noticias (titulo, contenido, imagen_url, autor_id, fecha_publicacion) 
-                    VALUES (@Titulo, @Contenido, @ImagenUrl, @AutorId, GETDATE())";
+                    INSERT INTO noticias (titulo, cuerpo, imagenUrl, fechaPublicacion)
+                    VALUES (@Titulo, @Cuerpo, @ImagenUrl, CONVERT(VARCHAR(10), GETDATE(), 103))";
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
                     cmd.Parameters.AddWithValue("@Titulo", request.Titulo);
-                    cmd.Parameters.AddWithValue("@Contenido", request.Contenido);
-                    // Si no hay imagen, mandamos un NULL a la base de datos
-                    cmd.Parameters.AddWithValue("@ImagenUrl", string.IsNullOrEmpty(request.ImagenUrl) ? DBNull.Value : request.ImagenUrl);
-                    cmd.Parameters.AddWithValue("@AutorId", request.AutorId);
-
-                    int filasAfectadas = cmd.ExecuteNonQuery();
-
-                    if (filasAfectadas > 0)
-                    {
-                        return Ok(new { mensaje = "Noticia publicada con éxito" });
-                    }
-                    else
-                    {
-                        return BadRequest(new { mensaje = "Error al publicar la noticia" });
-                    }
+                    cmd.Parameters.AddWithValue("@Cuerpo", request.Cuerpo);
+                    cmd.Parameters.AddWithValue("@ImagenUrl", string.IsNullOrWhiteSpace(request.ImagenUrl) ? (object)DBNull.Value : request.ImagenUrl);
+                    cmd.ExecuteNonQuery();
                 }
             }
+            return Ok(new { mensaje = "Noticia publicada con éxito." });
+        }
+
+        // DELETE: api/Noticias/{id}
+        [HttpDelete("{id}")]
+        public IActionResult EliminarNoticia(int id)
+        {
+            using (SqlConnection con = new SqlConnection(_connectionString))
+            {
+                con.Open();
+                string query = "DELETE FROM noticias WHERE id_noticia = @Id";
+
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            return Ok(new { mensaje = "Noticia eliminada." });
         }
     }
 
-    // Modelo para recibir el JSON desde el frontend
     public class NuevaNoticiaRequest
     {
         public string Titulo { get; set; }
-        public string Contenido { get; set; }
-        public string ImagenUrl { get; set; }
-        public int AutorId { get; set; }
+        public string Cuerpo { get; set; }
+        public string? ImagenUrl { get; set; }
     }
 }
