@@ -3,73 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal del Club - Central Córdoba</title>
+    <title>Defensores Central Córdoba - Sitio Oficial</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #f4f6f9; }
-        .login-container { max-width: 400px; margin-top: 10vh; }
-        .btn-dorado { background-color: #c5a059; color: #000; font-weight: bold; border: none; }
-        .btn-dorado:hover { background-color: #b08d4a; color: #fff; }
+       :root {
+            --color-principal: #111111; 
+            --acento: #c5a059; 
+        }
+        body { font-family: 'Montserrat', sans-serif; background-color: #f8f9fa; }
+        
+        .navbar { background-color: var(--color-principal); }
+        .navbar-brand { font-weight: 900; font-size: 1.3rem; letter-spacing: 1px; }
+        
+        .btn-socios { background-color: var(--acento); color: #000; font-weight: 900; border: none; transition: all 0.3s; }
+        .btn-socios:hover { background-color: #fff; color: #000; transform: scale(1.05); }
+        
+        .hero-section {
+            background: linear-gradient(rgba(17, 17, 17, 0.75), rgba(17, 17, 17, 0.75)), url('estadio.jpg') center/cover fixed;
+            color: white; padding: 120px 0; text-align: center; border-bottom: 5px solid var(--acento);
+        }
+        
+        .section-title { color: var(--color-principal); font-weight: 900; text-transform: uppercase; margin-bottom: 30px; border-bottom: 4px solid var(--acento); display: inline-block; padding-bottom: 5px; }
+        
+        .card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(17, 17, 17, 0.15) !important; }
+        
+        .match-card { border-left: 5px solid var(--acento); background: white; }
+        .player-card img { height: 300px; object-fit: cover; object-position: top; }
+        
+        footer { background-color: var(--color-principal); color: white; padding: 40px 0 20px; border-top: 3px solid var(--acento); mt-5; }
     </style>
 </head>
 <body>
-    <div class="container login-container">
-        <div class="card shadow-sm border-0">
-            <div class="card-body p-5 text-center">
-                <!-- Aquí cargamos tu logo real -->
-                <img src="image.png" alt="Logo CADCC" class="img-fluid mb-3" style="max-width: 140px;">
-                <h4 class="mb-4 fw-bold">Acceso Institucional</h4>
-                
-                <form id="loginForm" class="text-start">
-                    <div class="mb-3">
-                        <label class="form-label text-muted small fw-bold">CORREO ELECTRÓNICO</label>
-                        <input type="email" id="email" class="form-control" placeholder="admin@club.com" required>
+
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="image.png" alt="Logo CADCC" width="45" height="45" class="me-2">
+                DEF. CENTRAL CÓRDOBA
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link active" href="#">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#noticias">Noticias</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#plantel">El Plantel</a></li>
+                </ul>
+                <div class="d-flex">
+                    <!-- ACÁ ESTÁ EL PRIMER CAMBIO -->
+                    <a href="login.html" class="btn btn-socios px-4 shadow-sm">PORTAL SOCIOS</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero-section shadow">
+        <div class="container">
+            <h1 class="mb-3">C.A.D.C.C.</h1>
+            <p class="lead mb-4 text-white">Acompañá a Defensores Central Córdoba en esta nueva temporada. Hacete socio y formá parte de nuestra historia desde 2014.</p>
+            <!-- ACÁ ESTÁ EL SEGUNDO CAMBIO -->
+            <a href="login.html" class="btn btn-socios btn-lg px-5">ASOCIATE HOY</a>
+        </div>
+    </header>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-8" id="noticias">
+                <h2 class="section-title">Últimas Noticias</h2>
+                <div id="contenedorNoticias">
+                    <div class="text-center text-muted my-5">
+                        <div class="spinner-border" style="color: var(--acento);" role="status"></div>
+                        <p>Cargando novedades...</p>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label text-muted small fw-bold">CONTRASEÑA</label>
-                        <input type="password" id="password" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <h2 class="section-title">Próximo Partido</h2>
+                <div class="card match-card p-3 mb-4 shadow-sm text-center">
+                    <p class="text-muted mb-2 fw-bold">Fecha 4 - Torneo Clausura</p>
+                    <div class="d-flex justify-content-center align-items-center mb-3">
+                        <div class="fs-5 fw-bold text-end w-45">DEF. CENTRAL</div>
+                        <div class="fs-4 mx-3 text-muted">VS</div>
+                        <div class="fs-5 fw-bold text-start w-45">ATLÉTICO JRS</div>
                     </div>
-                    
-                    <div id="alertMessage" class="alert d-none text-center" role="alert"></div>
-                    
-                    <button type="submit" class="btn btn-dorado w-100 mt-3 py-2">INICIAR SESIÓN</button>
-                </form>
+                    <p class="mb-0"><i class="bi bi-calendar-event"></i> Sábado, 16:00 hs</p>
+                    <p class="text-muted small">Estadio Principal</p>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Sección Plantel Dinámica -->
+    <div class="container mt-5 mb-5" id="plantel">
+        <h2 class="section-title">Defensores Destacados</h2>
+        <div class="row g-4 mt-2" id="contenedorPlantel">
+            <div class="text-center text-muted my-5 w-100">
+                <div class="spinner-border" style="color: var(--acento);" role="status"></div>
+                <p>Cargando plantel...</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container text-center">
+            <img src="image.png" alt="Logo Footer" width="60" class="mb-3">
+            <p class="mb-1 fw-bold text-white">Club Defensores Central Córdoba</p>
+            <p class="small text-white-50 mb-0">© 2026 Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
     <script>
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault(); 
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const alertBox = document.getElementById('alertMessage');
-            
-            const apiUrl = 'https://localhost:7289/api/Auth/login'; 
-
+        async function cargarNoticias() {
+            const contenedor = document.getElementById('contenedorNoticias');
             try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
-                });
+                const response = await fetch('https://localhost:7289/api/Noticias');
+                const noticias = await response.json();
+                contenedor.innerHTML = ''; 
+                if (noticias && noticias.length > 0) {
+                    noticias.forEach(nota => {
+                        const img = nota.imagenUrl ? nota.imagenUrl : 'https://images.unsplash.com/photo-1518605368461-1e1e12dbcb3a?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80';
+                        contenedor.innerHTML += `
+                            <div class="card mb-4 border-0 shadow-sm">
+                                <div class="row g-0">
+                                    <div class="col-md-4">
+                                        <img src="${img}" class="img-fluid rounded-start h-100 object-fit-cover">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title fw-bold">${nota.titulo}</h5>
+                                            <p class="card-text text-muted">${nota.contenido}</p>
+                                            <p class="card-text"><small class="text-muted">Publicado el ${nota.fecha}</small></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else contenedor.innerHTML = '<p class="text-muted">No hay noticias.</p>';
+            } catch (error) { contenedor.innerHTML = '<div class="alert alert-danger">Error de conexión.</div>'; }
+        }
 
-                const data = await response.json();
+        async function cargarJugadores() {
+            const contenedor = document.getElementById('contenedorPlantel');
+            try {
+                const response = await fetch('https://localhost:7289/api/Jugadores');
+                const jugadores = await response.json();
+                contenedor.innerHTML = ''; 
+                if (jugadores && jugadores.length > 0) {
+                    jugadores.forEach(jugador => {
+                        contenedor.innerHTML += `
+                            <div class="col-md-3">
+                                <div class="card shadow-sm border-0 player-card h-100">
+                                    <img src="${jugador.imagenUrl}" class="card-img-top">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title fw-bold mb-0">${jugador.nombreCompleto}</h5>
+                                        <p class="text-muted small">${jugador.posicion}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else contenedor.innerHTML = '<p class="text-muted text-center w-100">No hay jugadores cargados.</p>';
+            } catch (error) { contenedor.innerHTML = '<div class="alert alert-danger w-100">Error de conexión.</div>'; }
+        }
 
-                if (response.ok) {
-                    alertBox.className = 'alert alert-success mt-3';
-                    alertBox.textContent = `¡Bienvenido, ${data.usuario.nombre}! Accediendo al panel...`;
-                    localStorage.setItem('usuarioClub', JSON.stringify(data.usuario));
-                    setTimeout(() => { window.location.href = 'dashboard.html'; }, 1500);
-                } else {
-                    alertBox.className = 'alert alert-danger mt-3';
-                    alertBox.textContent = data.mensaje || 'Credenciales incorrectas';
-                }
-            } catch (error) {
-                alertBox.className = 'alert alert-danger mt-3';
-                alertBox.textContent = 'Error de conexión con el servidor.';
-            }
-            alertBox.classList.remove('d-none');
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarNoticias();
+            cargarJugadores();
         });
     </script>
 </body>
